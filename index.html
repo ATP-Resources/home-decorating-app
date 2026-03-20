@@ -1,1 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My First Apartment: Home Decorating Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #2563eb; --blue-dark: #1d4ed8; --blue-light: #dbeafe;
+  --green: #16a34a; --green-light: #dcfce7;
+  --red: #dc2626; --red-light: #fee2e2;
+  --yellow: #d97706; --yellow-light: #fef3c7;
+  --purple: #7c3aed; --purple-light: #ede9fe;
+  --bg: #f1f5f9; --card: #ffffff; --text: #0f172a;
+  --text-muted: #64748b; --border: #e2e8f0;
+  --radius: 16px; --radius-sm: 10px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+h1,h2,h3 { font-family: 'Fredoka One', cursive; }
 
+/* ── Screens ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: block; }
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block; padding: 14px 28px; border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800;
+  cursor: pointer; border: none; transition: all 0.15s ease; text-align: center;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--blue); color: white; }
+.btn-success { background: var(--green); color: white; }
+.btn-danger  { background: var(--red); color: white; }
+.btn-ghost   { background: var(--border); color: var(--text); }
+.btn-purple  { background: var(--purple); color: white; }
+.btn-white   { background: white; color: var(--blue); }
+.btn-full    { width: 100%; display: block; }
+.btn-lg      { padding: 18px 36px; font-size: 1.15rem; border-radius: var(--radius); }
+
+/* ── Cards ── */
+.card {
+  background: var(--card); border-radius: var(--radius);
+  padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px;
+}
+.card-title {
+  font-family: 'Fredoka One', cursive; font-size: 1.4rem;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text);
+}
+
+/* ── Forms ── */
+.form-group { margin-bottom: 18px; }
+label { display: block; font-weight: 800; margin-bottom: 6px; font-size: 0.95rem; }
+input[type=text], input[type=password], select, textarea {
+  width: 100%; padding: 13px 16px; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); font-family: 'Nunito', sans-serif;
+  font-size: 1rem; font-weight: 600; color: var(--text); background: white;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); }
+textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
+
+/* ── Alerts ── */
+.alert {
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  font-weight: 700; font-size: 0.95rem; margin-bottom: 14px;
+}
+.alert-info    { background: var(--blue-light);   color: var(--blue-dark); border: 2px solid #bfdbfe; }
+.alert-success { background: var(--green-light);  color: #15803d;          border: 2px solid #bbf7d0; }
+.alert-danger  { background: var(--red-light);    color: #b91c1c;          border: 2px solid #fecaca; }
+.alert-warning { background: var(--yellow-light); color: #92400e;          border: 2px solid #fde68a; }
+
+/* ── Page wrapper ── */
+.page { max-width: 680px; margin: 0 auto; padding: 20px 16px; }
+.page-wide { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+
+/* ── Top Bar ── */
+.topbar {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: white; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(30,58,138,0.3);
+}
+.topbar-title { font-family: 'Fredoka One', cursive; font-size: 1.2rem; }
+.topbar-sub   { font-size: 0.75rem; opacity: 0.8; }
+.topbar-right { text-align: right; }
+.budget-pill {
+  display: inline-block; padding: 6px 14px; border-radius: 20px;
+  font-weight: 800; font-size: 0.9rem;
+  background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4);
+}
+.budget-pill.over    { background: rgba(220,38,38,0.5);  border-color: rgba(220,38,38,0.7); }
+.budget-pill.warn    { background: rgba(217,119,6,0.5);  border-color: rgba(217,119,6,0.7); }
+.budget-pill.good    { background: rgba(22,163,74,0.5);  border-color: rgba(22,163,74,0.7); }
+.progress-track { background: rgba(255,255,255,0.25); height: 5px; border-radius: 3px; margin-top: 6px; }
+.progress-fill  { height: 100%; background: white; border-radius: 3px; transition: width 0.4s ease; }
+
+/* ── WELCOME ── */
+#screen-welcome {
+  background: linear-gradient(160deg, #1e3a8a 0%, #2563eb 45%, #0ea5e9 100%);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 60px 24px;
+}
+.welcome-icon { font-size: 88px; animation: float 3s ease-in-out infinite; margin-bottom: 16px; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.welcome-title { color: white; font-size: 2.4rem; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.welcome-sub   { color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 600; margin-bottom: 48px; }
+.welcome-btns  { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
+
+/* ── TEACHER ── */
+.teacher-header {
+  background: linear-gradient(135deg, #4c1d95, #7c3aed);
+  color: white; text-align: center; padding: 28px 20px;
+}
+.teacher-header h2 { font-size: 1.8rem; }
+.teacher-header p  { opacity: 0.8; font-size: 0.9rem; margin-top: 4px; }
+
+.school-row {
+  background: white; border: 2px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 12px;
+}
+.school-row label { font-size: 1rem; margin-bottom: 8px; }
+.school-row select { padding: 10px 14px; font-size: 0.95rem; }
+
+.link-box {
+  background: #f8fafc; border: 2px solid var(--blue-light);
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 0.8rem; word-break: break-all; color: var(--blue);
+  margin: 8px 0;
+}
+.copy-btn {
+  background: var(--blue); color: white; border: none;
+  padding: 6px 14px; border-radius: 6px; cursor: pointer;
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem;
+  transition: background 0.2s;
+}
+.copy-btn:hover { background: var(--blue-dark); }
+
+/* Results table */
+.res-table-wrap { overflow-x: auto; }
+.res-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.res-table th { background: #4c1d95; color: white; padding: 10px 10px; text-align: left; white-space: nowrap; }
+.res-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.res-table tr:nth-child(even) td { background: #fafafa; }
+.tag {
+  display: inline-block; padding: 2px 9px; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 800;
+}
+.tag-green  { background: var(--green-light);  color: #15803d; }
+.tag-red    { background: var(--red-light);    color: #b91c1c; }
+.tag-yellow { background: var(--yellow-light); color: #92400e; }
+.tag-blue   { background: var(--blue-light);   color: var(--blue-dark); }
+.tag-purple { background: var(--purple-light); color: #5b21b6; }
+
+/* Stats row */
+.stats-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.stat-box {
+  background: white; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px 16px; flex: 1; min-width: 100px; text-align: center;
+}
+.stat-box .stat-num { font-family: 'Fredoka One', cursive; font-size: 1.6rem; line-height: 1; }
+.stat-box .stat-lbl { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-top: 2px; }
+
+/* ── STUDENT LOGIN ── */
+#screen-student-login .page { padding-top: 30px; }
+
+/* ── SHOPPING ── */
+.step-dots { display: flex; justify-content: center; gap: 5px; padding: 10px 0; flex-wrap: wrap; }
+.dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--border); transition: all 0.25s;
+}
+.dot.done   { background: var(--green); }
+.dot.active { background: var(--blue); transform: scale(1.4); }
+
+.items-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  margin-bottom: 8px;
+}
+@media(min-width:520px){ .items-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.item-card {
+  border: 3px solid var(--border); border-radius: 12px;
+  padding: 14px 10px; cursor: pointer; text-align: center;
+  transition: all 0.15s ease; position: relative; background: white;
+  user-select: none;
+}
+.item-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(37,99,235,0.18); }
+.item-card.sel   { border-color: var(--blue); background: var(--blue-light); }
+.item-card.sel::after {
+  content: '✓'; position: absolute; top: 5px; right: 9px;
+  color: var(--blue); font-weight: 900; font-size: 1rem;
+}
+.item-price { display: block; font-family: 'Fredoka One', cursive; font-size: 1.35rem; color: var(--blue); }
+.item-name  { display: block; font-size: 0.78rem; color: var(--text-muted); font-weight: 700; margin-top: 3px; line-height: 1.3; }
+
+.check-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; }
+.check-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 12px; border: 2px solid var(--border);
+  border-radius: 10px; cursor: pointer; transition: all 0.15s; background: white;
+}
+.check-row:hover  { border-color: var(--blue); }
+.check-row.sel    { border-color: var(--blue); background: var(--blue-light); }
+.check-row input  { width: 18px; height: 18px; cursor: pointer; accent-color: var(--blue); flex-shrink: 0; }
+.check-price { font-family: 'Fredoka One', cursive; font-size: 1rem; color: var(--blue); display: block; }
+.check-name  { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; display: block; line-height: 1.3; }
+
+.nav-row { display: flex; gap: 12px; margin-top: 8px; padding-bottom: 30px; }
+.nav-row .btn { flex: 1; }
+
+/* ── SUMMARY ── */
+.total-box {
+  text-align: center; padding: 20px; border-radius: var(--radius);
+  font-family: 'Fredoka One', cursive; font-size: 1.7rem; margin-bottom: 12px;
+}
+.total-blue   { background: var(--blue-light);  color: var(--blue-dark); }
+.total-green  { background: var(--green-light); color: #15803d; }
+.total-red    { background: var(--red-light);   color: #b91c1c; }
+
+.room-card { background: white; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 12px; }
+.room-title { font-family: 'Fredoka One', cursive; font-size: 1.15rem; margin-bottom: 10px; }
+.sum-table  { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.sum-table td { padding: 7px 8px; border-bottom: 1px solid var(--border); }
+.sum-table td:last-child { text-align: right; font-weight: 800; color: var(--blue); }
+
+/* ── REFLECTION ── */
+.q-label { font-weight: 800; font-size: 1rem; margin-bottom: 6px; display: block; }
+
+/* ── SUBMITTED ── */
+#screen-submitted {
+  background: linear-gradient(160deg, #14532d, #16a34a);
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: 60px 24px; min-height: 100vh;
+}
+.submitted-icon { font-size: 84px; animation: pop 0.5s ease; }
+@keyframes pop { 0%{transform:scale(0)} 80%{transform:scale(1.15)} 100%{transform:scale(1)} }
+
+/* Spinner */
+.spin {
+  display: inline-block; width: 18px; height: 18px;
+  border: 3px solid rgba(255,255,255,0.3); border-top-color: white;
+  border-radius: 50%; animation: spinning 0.8s linear infinite;
+  vertical-align: middle; margin-right: 6px;
+}
+@keyframes spinning { to{transform:rotate(360deg)} }
+
+/* Read aloud btn */
+.tts-btn {
+  background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.5);
+  color: white; padding: 5px 12px; border-radius: 20px;
+  cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.8rem;
+}
+
+/* modal */
+.modal-backdrop {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+  z-index: 1000; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-backdrop.open { display: flex; }
+.modal-box {
+  background: white; border-radius: var(--radius); padding: 24px;
+  max-width: 600px; width: 100%; max-height: 85vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+.modal-title { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 14px; }
+.modal-section { font-weight: 800; margin: 12px 0 4px; color: var(--blue); font-size: 0.9rem; }
+
+/* ── misc utils ── */
+.mt8  { margin-top: 8px; }
+.mt16 { margin-top: 16px; }
+.mt24 { margin-top: 24px; }
+.mb8  { margin-bottom: 8px; }
+.text-muted { color: var(--text-muted); font-size: 0.9rem; }
+.divider { border: none; border-top: 2px solid var(--border); margin: 18px 0; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     WELCOME
+══════════════════════════════ -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-icon">🏠</div>
+  <h1 class="welcome-title">My First Apartment</h1>
+  <p class="welcome-sub">Home Decorating Challenge</p>
+  <div class="welcome-btns">
+    <button class="btn btn-white btn-lg" onclick="go('student-login')">🎓 I'm a Student</button>
+    <button class="btn btn-lg" style="background:rgba(255,255,255,0.18);color:white;border:2px solid rgba(255,255,255,0.5)" onclick="go('teacher-login')">🔐 Teacher Login</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     TEACHER LOGIN
+══════════════════════════════ -->
+<div id="screen-teacher-login" class="screen">
+  <div class="teacher-header">
+    <div style="font-size:42px;margin-bottom:8px">🔐</div>
+    <h2>Teacher Access</h2>
+    <p>Katella ATP Program</p>
+  </div>
+  <div class="page">
+    <div class="card mt24">
+      <div class="form-group">
+        <label for="t-pin">Enter Your PIN</label>
+        <input type="password" id="t-pin" placeholder="4-digit PIN" maxlength="4" inputmode="numeric"
+               onkeydown="if(event.key==='Enter')checkPin()">
+      </div>
+      <button class="btn btn-purple btn-full" onclick="checkPin()">Login →</button>
+      <div id="pin-err" class="alert alert-danger mt16" style="display:none">❌ Incorrect PIN. Try again.</div>
+    </div>
+    <button class="btn btn-ghost btn-full mt8" onclick="go('welcome')">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     TEACHER DASHBOARD
+══════════════════════════════ -->
+<div id="screen-teacher-dashboard" class="screen">
+  <div class="teacher-header">
+    <div style="font-size:36px;margin-bottom:6px">📊</div>
+    <h2>Teacher Dashboard</h2>
+    <p>Home Decorating Challenge</p>
+  </div>
+
+  <div class="page-wide">
+
+    <!-- Budget Settings -->
+    <div class="card mt16">
+      <div class="card-title">⚙️ Set Budget by School</div>
+      <p class="text-muted mb8">Choose a budget for each school, then generate Google Classroom links.</p>
+      <div id="budget-settings-container"></div>
+      <button class="btn btn-success btn-full mt16" onclick="generateLinks()">🔗 Generate Google Classroom Links</button>
+    </div>
+
+    <!-- Generated Links -->
+    <div id="links-card" class="card" style="display:none">
+      <div class="card-title">📋 Google Classroom Links</div>
+      <p class="text-muted mb8">Post each link to the matching school section.</p>
+      <div id="links-output"></div>
+    </div>
+
+    <!-- Results -->
+    <div class="card">
+      <div class="card-title">📈 Student Submissions</div>
+
+      <!-- Filter + Actions -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+        <select id="filter-school" onchange="filterResults()" style="flex:1;min-width:140px;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-family:Nunito,sans-serif;font-weight:700">
+          <option value="">All Schools</option>
+          <option>Katella ATP</option>
+          <option>Kennedy ATP</option>
+          <option>Magnolia ATP</option>
+          <option>Gilbert ATP</option>
+        </select>
+        <button class="btn btn-ghost" style="padding:9px 16px" onclick="loadResults()">🔄 Refresh</button>
+        <button class="btn btn-ghost" style="padding:9px 16px" onclick="exportCSV()">📥 CSV</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row" id="stats-row" style="display:none"></div>
+
+      <!-- Table -->
+      <div id="res-loading" class="text-muted" style="text-align:center;padding:30px">Loading…</div>
+      <div id="res-empty"   style="display:none;text-align:center;padding:30px;color:var(--text-muted)">
+        <div style="font-size:40px;margin-bottom:8px">📭</div>No submissions yet.
+      </div>
+      <div id="res-table-wrap" class="res-table-wrap" style="display:none">
+        <table class="res-table">
+          <thead><tr>
+            <th>Name</th><th>School</th><th>Budget</th><th>Total</th><th>Status</th><th>Date</th><th></th>
+          </tr></thead>
+          <tbody id="res-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <button class="btn btn-ghost btn-full" style="margin-bottom:30px" onclick="go('welcome')">← Exit Dashboard</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     STUDENT LOGIN
+══════════════════════════════ -->
+<div id="screen-student-login" class="screen">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">🏠 My First Apartment</div>
+      <div class="topbar-sub">Home Decorating Challenge</div>
+    </div>
+  </div>
+  <div class="page">
+    <div class="card mt24">
+      <div class="card-title">👋 Let's Get Started!</div>
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" id="s-first" placeholder="Enter your first name" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="s-last" placeholder="Enter your last name" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Your School</label>
+        <select id="s-school">
+          <option value="">-- Select your school --</option>
+          <option>Katella ATP</option>
+          <option>Kennedy ATP</option>
+          <option>Magnolia ATP</option>
+          <option>Gilbert ATP</option>
+        </select>
+      </div>
+      <div id="login-err" class="alert alert-danger" style="display:none">⚠️ Please fill in all fields!</div>
+      <button class="btn btn-primary btn-lg btn-full" onclick="startActivity()">Let's Go! 🚀</button>
+    </div>
+    <button class="btn btn-ghost btn-full mt8" onclick="go('welcome')">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     INSTRUCTIONS
+══════════════════════════════ -->
+<div id="screen-instructions" class="screen">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">🏠 My First Apartment</div>
+      <div class="topbar-sub" id="instr-name-sub"></div>
+    </div>
+    <button class="tts-btn" onclick="speak('instr')">🔊 Read Aloud</button>
+  </div>
+  <div class="page">
+    <div class="card mt16" id="instr-card">
+      <div class="card-title">🎉 Congratulations!</div>
+      <p id="instr-text" style="font-size:1.05rem;line-height:1.8;margin-bottom:16px">
+        You just got your own apartment! 🎉<br><br>
+        Now it's time to furnish and decorate your new home.
+        You will shop for furniture, kitchen items, bedding, bathroom supplies, food, and cleaning supplies.<br><br>
+        For each category, <strong>pick ONE item</strong> you would buy.
+        For food and cleaning supplies, you can pick <strong>as many as you want</strong>.<br><br>
+        Watch your <strong>running total</strong> at the top of the screen — it updates every time you make a choice!
+      </p>
+      <div id="budget-msg-box" class="alert alert-info"></div>
+    </div>
+    <button class="btn btn-primary btn-lg btn-full" onclick="beginShopping()" style="margin-bottom:30px">
+      Start Shopping! 🛒
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SHOPPING
+══════════════════════════════ -->
+<div id="screen-shopping" class="screen">
+  <div class="topbar">
+    <div style="flex:1">
+      <div class="topbar-title" id="shop-title">🏠 My First Apartment</div>
+      <div class="progress-track"><div class="progress-fill" id="shop-progress" style="width:0%"></div></div>
+    </div>
+    <div style="margin-left:12px">
+      <div class="budget-pill good" id="budget-pill">$0.00</div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="step-dots" id="step-dots"></div>
+
+    <div class="card">
+      <div class="card-title" id="cat-title"></div>
+      <p class="text-muted mb8" id="cat-instr" style="font-size:0.95rem"></p>
+      <div id="items-container"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-ghost" onclick="navShop(-1)">← Back</button>
+      <button class="btn btn-primary" id="next-btn" onclick="navShop(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SUMMARY
+══════════════════════════════ -->
+<div id="screen-summary" class="screen">
+  <div class="topbar">
+    <div class="topbar-title">🛒 Shopping Summary</div>
+  </div>
+  <div class="page">
+    <div class="card mt16">
+      <div id="total-box" class="total-box"></div>
+      <div id="budget-result-msg" class="alert"></div>
+    </div>
+    <div id="rooms-container"></div>
+    <button class="btn btn-primary btn-lg btn-full" onclick="go('reflection')" style="margin-bottom:30px">
+      Continue to Reflection Questions →
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     REFLECTION
+══════════════════════════════ -->
+<div id="screen-reflection" class="screen">
+  <div class="topbar">
+    <div class="topbar-title">💭 Time to Reflect</div>
+    <button class="tts-btn" onclick="speak('reflect')">🔊 Read Questions</button>
+  </div>
+  <div class="page">
+    <div class="card mt16">
+      <div class="card-title">Answer These Questions</div>
+      <p class="text-muted mb8">Write in complete sentences. There are no wrong answers!</p>
+      <div class="form-group">
+        <label class="q-label">1. What did you learn from this activity?</label>
+        <textarea id="r1" placeholder="Write your answer here…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="q-label">2. Were you surprised by your final total? Why or why not?</label>
+        <textarea id="r2" placeholder="Write your answer here…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="q-label">3. What are some ways you can save money when furnishing your apartment?</label>
+        <textarea id="r3" placeholder="Write your answer here…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="q-label">4. At what age do you think you'll have enough saved to move out?</label>
+        <textarea id="r4" placeholder="Write your answer here…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="q-label">5. Do you think you will need a job before you move out? Why or why not?</label>
+        <textarea id="r5" placeholder="Write your answer here…"></textarea>
+      </div>
+      <div id="ref-err" class="alert alert-danger" style="display:none">⚠️ Please answer all 5 questions before submitting!</div>
+      <button class="btn btn-success btn-lg btn-full" onclick="submitWork()">
+        <span id="sub-spin" class="spin" style="display:none"></span>Submit My Work! ✅
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SUBMITTED
+══════════════════════════════ -->
+<div id="screen-submitted" class="screen">
+  <div class="submitted-icon">🎉</div>
+  <h2 style="color:white;font-size:2.2rem;margin:16px 0 8px">Amazing Work!</h2>
+  <p style="color:rgba(255,255,255,0.9);font-size:1.1rem;font-weight:700;margin-bottom:28px" id="sub-msg"></p>
+  <div style="background:rgba(255,255,255,0.15);border-radius:var(--radius);padding:20px;color:white;max-width:380px;width:100%;margin-bottom:28px">
+    <div style="font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:4px" id="sub-total"></div>
+    <div id="sub-status" style="font-weight:700;font-size:1rem"></div>
+  </div>
+  <button class="btn btn-white" onclick="resetApp()">🔄 Start Over</button>
+</div>
+
+<!-- ══════════════════════════════
+     DETAIL MODAL
+══════════════════════════════ -->
+<div id="modal" class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title"></div>
+    <div id="modal-body"></div>
+    <button class="btn btn-ghost btn-full mt16" onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────
+// CONFIG  —  Update SCRIPT_URL after setting up Google Apps Script
+// ─────────────────────────────────────────────────────────────────
+const PIN         = "8054";
+const SCRIPT_URL  = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+
+const SCHOOLS = ["Katella ATP","Kennedy ATP","Magnolia ATP","Gilbert ATP"];
+
+const BUDGETS = [
+  { v: 0,    label: "No Budget – Unlimited",   desc: "Students see totals with no limit." },
+  { v: 1000, label: "Tight Budget – $1,000",   desc: "Forces prioritizing needs over wants." },
+  { v: 2000, label: "Moderate Budget – $2,000", desc: "A mix of mid-range choices." },
+  { v: 3000, label: "Flexible Budget – $3,000", desc: "Room for higher-end items." }
+];
+
+const CATS = [
+  { id:"sofa",   name:"Sofa Set",       emoji:"🛋️",  room:"Living Room", type:"single",
+    instr:"Pick ONE sofa or couch for your living room.",
+    items:[{p:190,n:"Basic Sofa"},{p:250,n:"3-Seat Sofa"},{p:300,n:"Loveseat"},
+           {p:400,n:"Recliner Sofa"},{p:500,n:"Sectional Sofa"},{p:800,n:"Premium Sectional"}] },
+  { id:"dining", name:"Dining Table",   emoji:"🍽️",  room:"Dining Room", type:"single",
+    instr:"Pick ONE dining table set for eating meals.",
+    items:[{p:125,n:"Round Wood Table"},{p:150,n:"Oval Table Set"},{p:295,n:"Wood Table Set"},
+           {p:378,n:"Dark Wood Table"},{p:425,n:"Classic Wood Set"},{p:459,n:"Modern Glass Table"}] },
+  { id:"tvstand",name:"TV Stand",       emoji:"📺",  room:"Living Room", type:"single",
+    instr:"Pick ONE TV stand for your living room.",
+    items:[{p:75,n:"Glass TV Stand"},{p:100,n:"Basic Black Stand"},{p:150,n:"Storage Cabinet Stand"},
+           {p:160,n:"3-Shelf Stand"},{p:299,n:"Modern Wood Stand"},{p:350,n:"Large Entertainment Center"}] },
+  { id:"curtains",name:"Curtains",      emoji:"🪟",  room:"Living Room", type:"single",
+    instr:"Pick ONE set of curtains for your windows.",
+    items:[{p:13.99,n:"Tricia Thermal Panel"},{p:15.99,n:"Saratoga Panel"},
+           {p:19.00,n:"Greve Strand Panel"},{p:28.99,n:"Thermavoile Grommet"}] },
+  { id:"dishes", name:"Dishes",         emoji:"🥣",  room:"Kitchen", type:"single",
+    instr:"Pick ONE set of dishes for eating.",
+    items:[{p:19.96,n:"12-Piece Glass Set"},{p:26.72,n:"Corelle 16-Piece"},{p:26.88,n:"Mainstays 16-Piece"},
+           {p:49.96,n:"Jade Crackle 16-Piece"},{p:49.97,n:"Pioneer Woman 12-Piece"}] },
+  { id:"pots",   name:"Pots & Pans",   emoji:"🍳",  room:"Kitchen", type:"single",
+    instr:"Pick ONE cookware set for cooking meals.",
+    items:[{p:39.97,n:"Mainstays 18-Piece"},{p:49.42,n:"T-fal Nonstick 12-Piece"},{p:59.00,n:"Farberware 15-Piece"},
+           {p:69.97,n:"Farberware Stainless 13-Piece"},{p:119.00,n:"Tramontina Gourmet 12-Piece"}] },
+  { id:"bedroom",name:"Bedroom Set",   emoji:"🛏️",  room:"Bedroom", type:"single",
+    instr:"Pick ONE bedroom furniture set (bed frame, dresser, and more).",
+    items:[{p:435,n:"Cherry Wood Set"},{p:605,n:"Black Leather Set"},{p:649,n:"Modern Grey Set"},
+           {p:799,n:"Brown Wood Set"},{p:999,n:"Upholstered Set"},{p:1399,n:"White Tufted Set"}] },
+  { id:"bedspread",name:"Bedspread",   emoji:"🌸",  room:"Bedroom", type:"single",
+    instr:"Pick ONE bedspread or quilt.",
+    items:[{p:49.96,n:"White Fringe Bedspread"},{p:49.97,n:"Patchwork Quilt"},{p:54.75,n:"Embroidered Quilt"},
+           {p:57.41,n:"Blue Trellis Quilt"},{p:64.54,n:"Floral Quilt"},{p:89.88,n:"Plaid Quilt"}] },
+  { id:"pillows",name:"Pillows",       emoji:"😴",  room:"Bedroom", type:"single",
+    instr:"Pick ONE pillow set for sleeping.",
+    items:[{p:25.64,n:"Down Alternative (2-pack)"},{p:28.94,n:"Simmons Beautyrest"},
+           {p:32.97,n:"Gusseted (2-pack)"},{p:33.97,n:"Striped (2-pack)"}] },
+  { id:"sheets", name:"Sheets",        emoji:"🛌",  room:"Bedroom", type:"single",
+    instr:"Pick ONE set of bed sheets.",
+    items:[{p:19.97,n:"Plaid Cotton Sheets"},{p:42.99,n:"Microfiber Set"},{p:50.95,n:"Floral Sheets"},
+           {p:54.87,n:"Solid Color Sheets"},{p:54.99,n:"Multi-Color Set"},{p:79.99,n:"Premium Bamboo Sheets"}] },
+  { id:"shower", name:"Shower Curtain",emoji:"🚿",  room:"Bathroom", type:"single",
+    instr:"Pick ONE shower curtain for your bathroom.",
+    items:[{p:7.06,n:"Grey Ombre"},{p:9.97,n:"Circle Pattern"},{p:11.00,n:"Colorful Daisy"},
+           {p:11.96,n:"Blue Stripe"},{p:15.87,n:"Circle Design"},{p:16.96,n:"Black/White"},
+           {p:19.88,n:"Medallion"},{p:28.99,n:"Tree Design"}] },
+  { id:"towels", name:"Towels",        emoji:"🏊",  room:"Bathroom", type:"single",
+    instr:"Pick ONE set of bath towels.",
+    items:[{p:12.99,n:"Basic Tan Set"},{p:29.28,n:"Blue Set"},{p:30.48,n:"Grey Set"},
+           {p:31.99,n:"White Set"},{p:32.87,n:"Patterned Set"}] },
+  { id:"food",   name:"Basic Food",    emoji:"🛒",  room:"Pantry", type:"multi",
+    instr:"Check ALL food items you want to buy. You can pick more than one!",
+    items:[{p:2.89,n:"All-Purpose Flour"},{p:3.25,n:"Gallon of Milk"},{p:1.49,n:"Sugar"},
+           {p:1.75,n:"Dozen Eggs"},{p:3.99,n:"Cereal (Froot Loops)"},{p:3.49,n:"Ketchup"},
+           {p:1.99,n:"Bread"},{p:2.25,n:"Salt & Pepper"},{p:3.60,n:"Peanut Butter"},
+           {p:10.00,n:"Fresh Fruit Basket"}] },
+  { id:"cleaning",name:"Cleaning Supplies",emoji:"🧹",room:"Cleaning", type:"multi",
+    instr:"Check ALL cleaning supplies you want to buy. You can pick more than one!",
+    items:[{p:2.99,n:"Windex"},{p:8.25,n:"Paper Towels"},{p:4.75,n:"Dustpan & Brush"},
+           {p:6.49,n:"Tide Detergent"},{p:8.00,n:"Mop"},{p:6.29,n:"Broom"},
+           {p:4.89,n:"Toilet Brush"},{p:2.49,n:"Lysol Cleaner"},{p:3.00,n:"Mop Bucket"},
+           {p:1.25,n:"Sponge"},{p:4.79,n:"Duster"}] }
+];
+
+const ROOM_EMOJI = {
+  "Living Room":"🛋️","Dining Room":"🍽️","Kitchen":"🍳",
+  "Bedroom":"🛏️","Bathroom":"🚿","Pantry":"🛒","Cleaning":"🧹"
+};
+
+// ── App State ──────────────────────────────────────
+let S = {
+  name:"", school:"", budget:0, step:0,
+  sel:{},   // catId -> [indices]
+  total:0
+};
+let allRows = [];
+
+// ── Navigation ─────────────────────────────────────
+function go(screen) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+screen).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ── TEACHER ────────────────────────────────────────
+function checkPin() {
+  if (document.getElementById('t-pin').value === PIN) {
+    document.getElementById('pin-err').style.display='none';
+    document.getElementById('t-pin').value='';
+    go('teacher-dashboard');
+    buildBudgetSettings();
+    loadResults();
+  } else {
+    document.getElementById('pin-err').style.display='block';
+  }
+}
+
+function buildBudgetSettings() {
+  const c = document.getElementById('budget-settings-container');
+  c.innerHTML = SCHOOLS.map(school => {
+    const saved = localStorage.getItem('bgt_'+school)||'0';
+    const id = 'bgt-'+school.replace(/\s/g,'-');
+    return `<div class="school-row">
+      <label>🏫 ${school}</label>
+      <select id="${id}">
+        ${BUDGETS.map(b=>`<option value="${b.v}" ${b.v==saved?'selected':''}>${b.label} — ${b.desc}</option>`).join('')}
+      </select>
+    </div>`;
+  }).join('');
+}
+
+function generateLinks() {
+  const base = window.location.href.split('?')[0];
+  const out  = document.getElementById('links-output');
+  out.innerHTML = '';
+  SCHOOLS.forEach(school => {
+    const id  = 'bgt-'+school.replace(/\s/g,'-');
+    const bv  = document.getElementById(id).value;
+    localStorage.setItem('bgt_'+school, bv);
+    const bLabel = BUDGETS.find(b=>b.v==bv).label;
+    const url = `${base}?school=${encodeURIComponent(school)}&budget=${bv}`;
+    out.innerHTML += `
+      <div style="margin-bottom:14px;padding:12px;background:#f8fafc;border-radius:10px;border:2px solid var(--border)">
+        <div style="font-weight:800;margin-bottom:2px">🏫 ${school}</div>
+        <div class="text-muted mb8">${bLabel}</div>
+        <div class="link-box">${url}</div>
+        <button class="copy-btn" onclick="copyUrl('${url}',this)">📋 Copy Link</button>
+      </div>`;
+  });
+  document.getElementById('links-card').style.display='block';
+}
+
+function copyUrl(url, btn) {
+  navigator.clipboard.writeText(url).then(()=>{
+    btn.textContent='✅ Copied!';
+    setTimeout(()=>btn.textContent='📋 Copy Link',2000);
+  });
+}
+
+async function loadResults() {
+  const loading = document.getElementById('res-loading');
+  document.getElementById('res-table-wrap').style.display='none';
+  document.getElementById('res-empty').style.display='none';
+  document.getElementById('stats-row').style.display='none';
+  loading.style.display='block';
+  loading.innerHTML='Loading submissions…';
+
+  if (SCRIPT_URL.includes('PASTE_YOUR')) {
+    loading.innerHTML=`<div class="alert alert-warning" style="text-align:left">
+      ⚠️ <strong>Google Sheets not connected yet.</strong><br>
+      <span style="font-weight:600">Follow the Google Apps Script setup instructions to connect your dashboard.</span><br>
+      <span class="text-muted">Until then, submissions save locally on each student's device.</span>
+    </div>`;
+    return;
+  }
+  try {
+    const r = await fetch(SCRIPT_URL+'?action=getAll');
+    const d = await r.json();
+    allRows = d.rows||[];
+    showResults(allRows);
+  } catch(e) {
+    loading.innerHTML='<div class="alert alert-danger">❌ Could not load results. Check your connection.</div>';
+  }
+}
+
+function filterResults() {
+  const school = document.getElementById('filter-school').value;
+  showResults(school ? allRows.filter(r=>r.school===school) : allRows);
+}
+
+function showResults(rows) {
+  const loading = document.getElementById('res-loading');
+  loading.style.display='none';
+  if (!rows||rows.length===0) {
+    document.getElementById('res-empty').style.display='block';
+    document.getElementById('stats-row').style.display='none';
+    return;
+  }
+  const under = rows.filter(r=>r.budget==0||+r.total<=+r.budget).length;
+  const over  = rows.filter(r=>r.budget>0&&+r.total>+r.budget).length;
+  document.getElementById('stats-row').style.display='flex';
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-box"><div class="stat-num" style="color:var(--blue)">${rows.length}</div><div class="stat-lbl">Students</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--green)">${under}</div><div class="stat-lbl">Under Budget</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--red)">${over}</div><div class="stat-lbl">Over Budget</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:var(--purple)">$${(rows.reduce((a,r)=>a+ +r.total,0)/rows.length).toFixed(0)}</div><div class="stat-lbl">Avg Spent</div></div>`;
+
+  document.getElementById('res-table-wrap').style.display='block';
+  document.getElementById('res-tbody').innerHTML = rows.map(r=>{
+    const t=+r.total, b=+r.budget;
+    const tag = b===0
+      ? '<span class="tag tag-blue">No Limit</span>'
+      : t<=b ? '<span class="tag tag-green">✅ Under</span>'
+             : '<span class="tag tag-red">❌ Over</span>';
+    return `<tr>
+      <td><strong>${r.name}</strong></td>
+      <td><span class="tag tag-purple">${r.school}</span></td>
+      <td>${b>0?'$'+b.toLocaleString():'—'}</td>
+      <td><strong>$${t.toFixed(2)}</strong></td>
+      <td>${tag}</td>
+      <td style="font-size:0.8rem;color:var(--text-muted)">${r.timestamp||''}</td>
+      <td><button onclick='showDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})' style="background:var(--purple);color:white;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;font-size:0.8rem">View</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function showDetail(r) {
+  const sel  = typeof r.selections==='string' ? JSON.parse(r.selections) : r.selections;
+  const refs = typeof r.reflections==='string'? JSON.parse(r.reflections): r.reflections||[];
+  const qs = ['What did you learn?','Surprised by total?','Ways to save money?','Age to move out?','Need a job?'];
+  let html = `<p><strong>School:</strong> ${r.school} | <strong>Budget:</strong> ${+r.budget>0?'$'+r.budget:'No Limit'} | <strong>Spent:</strong> $${(+r.total).toFixed(2)}</p>
+    <hr class="divider">
+    <div class="modal-section">🛒 PURCHASES</div>`;
+  CATS.forEach(cat=>{
+    const s=(sel||{})[cat.id];
+    if(s&&s.length) html+=`<p style="margin-bottom:4px"><strong>${cat.emoji} ${cat.name}:</strong> ${s.map(i=>`${cat.items[i].n} ($${cat.items[i].p.toFixed(2)})`).join(', ')}</p>`;
+  });
+  html += `<hr class="divider"><div class="modal-section">💭 REFLECTIONS</div>`;
+  qs.forEach((q,i)=>{ if(refs[i]) html+=`<p style="margin-bottom:10px"><strong>${q}</strong><br>${refs[i]}</p>`; });
+  document.getElementById('modal-title').textContent = r.name;
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+function exportCSV() {
+  if(!allRows.length) return;
+  const qs=['Q1-Learned','Q2-Surprised','Q3-Save Money','Q4-Move Out Age','Q5-Need Job'];
+  const hdr=['Name','School','Budget','Total','Status','Date',...qs];
+  const rows = allRows.map(r=>{
+    const refs=typeof r.reflections==='string'?JSON.parse(r.reflections):(r.reflections||[]);
+    const b=+r.budget, t=+r.total;
+    const status=b>0?(t<=b?'Under':'Over'):'No Limit';
+    return [r.name,r.school,b>0?b:'None',t.toFixed(2),status,r.timestamp,...qs.map((_,i)=>'"'+(refs[i]||'').replace(/"/g,'""')+'"')];
+  });
+  const csv=[hdr,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='home-decorating-results.csv'; a.click();
+}
+
+// ── STUDENT ────────────────────────────────────────
+function startActivity() {
+  const fn=document.getElementById('s-first').value.trim();
+  const ln=document.getElementById('s-last').value.trim();
+  const sc=document.getElementById('s-school').value;
+  if(!fn||!ln||!sc){ document.getElementById('login-err').style.display='block'; return; }
+  document.getElementById('login-err').style.display='none';
+  S.name=fn+' '+ln; S.school=sc;
+
+  // Budget from URL or teacher's saved setting
+  const p=new URLSearchParams(window.location.search);
+  S.budget = p.has('budget') ? +p.get('budget') : +(localStorage.getItem('bgt_'+sc)||0);
+
+  const bo = BUDGETS.find(b=>b.v===S.budget)||BUDGETS[0];
+  document.getElementById('instr-name-sub').textContent = 'Welcome, '+fn+'!';
+  document.getElementById('budget-msg-box').innerHTML = S.budget>0
+    ? `💰 Your budget is <strong>$${S.budget.toLocaleString()}</strong>. Try to stay under! <em>${bo.desc}</em>`
+    : `💡 No budget limit for this activity — just discover how much everything costs!`;
+  go('instructions');
+}
+
+function beginShopping() {
+  S.step=0; S.sel={}; S.total=0;
+  buildDots(); renderStep(); go('shopping');
+}
+
+function buildDots() {
+  document.getElementById('step-dots').innerHTML =
+    CATS.map((_,i)=>`<div class="dot" id="d${i}"></div>`).join('');
+}
+
+function refreshDots() {
+  CATS.forEach((_,i)=>{
+    const d=document.getElementById('d'+i);
+    d.className='dot'+(i<S.step?' done':i===S.step?' active':'');
+  });
+}
+
+function renderStep() {
+  const cat=CATS[S.step];
+  const pct=(S.step/CATS.length)*100;
+  document.getElementById('cat-title').innerHTML   = cat.emoji+' '+cat.name;
+  document.getElementById('cat-instr').textContent = cat.instr;
+  document.getElementById('shop-progress').style.width = pct+'%';
+  document.getElementById('next-btn').textContent  = S.step<CATS.length-1 ? 'Next →' : 'See My Total →';
+  refreshDots(); refreshPill();
+
+  const con=document.getElementById('items-container');
+  con.innerHTML='';
+  if(cat.type==='multi') {
+    const g=document.createElement('div'); g.className='check-grid';
+    cat.items.forEach((item,idx)=>{
+      const checked=(S.sel[cat.id]||[]).includes(idx);
+      const row=document.createElement('div');
+      row.className='check-row'+(checked?' sel':'');
+      row.onclick=()=>toggleCheck(cat.id,idx,row);
+      row.innerHTML=`<input type="checkbox" ${checked?'checked':''} onclick="event.stopPropagation();toggleCheck('${cat.id}',${idx},this.closest('.check-row'))">
+        <div><span class="check-price">$${item.p.toFixed(2)}</span><span class="check-name">${item.n}</span></div>`;
+      g.appendChild(row);
+    });
+    con.appendChild(g);
+  } else {
+    const g=document.createElement('div'); g.className='items-grid';
+    cat.items.forEach((item,idx)=>{
+      const isSel=(S.sel[cat.id]||[])[0]===idx;
+      const card=document.createElement('div');
+      card.className='item-card'+(isSel?' sel':'');
+      card.onclick=()=>pickItem(cat.id,idx);
+      card.innerHTML=`<span class="item-price">$${item.p.toFixed(2)}</span><span class="item-name">${item.n}</span>`;
+      g.appendChild(card);
+    });
+    con.appendChild(g);
+  }
+  window.scrollTo(0,0);
+}
+
+function pickItem(catId,idx) {
+  S.sel[catId]=[idx];
+  recalc(); refreshPill();
+  document.querySelectorAll('.item-card').forEach((c,i)=>c.classList.toggle('sel',i===idx));
+}
+
+function toggleCheck(catId,idx,el) {
+  if(!S.sel[catId]) S.sel[catId]=[];
+  const arr=S.sel[catId], pos=arr.indexOf(idx);
+  if(pos===-1){ arr.push(idx); el.classList.add('sel'); el.querySelector('input').checked=true; }
+  else{ arr.splice(pos,1); el.classList.remove('sel'); el.querySelector('input').checked=false; }
+  recalc(); refreshPill();
+}
+
+function recalc() {
+  S.total=0;
+  CATS.forEach(cat=>{ (S.sel[cat.id]||[]).forEach(i=>{ S.total+=cat.items[i].p; }); });
+}
+
+function refreshPill() {
+  const pill=document.getElementById('budget-pill');
+  if(!pill) return;
+  const t=S.total, b=S.budget;
+  pill.className='budget-pill';
+  if(b===0){ pill.textContent=`💰 $${t.toFixed(2)}`; pill.classList.add('good'); }
+  else {
+    const rem=b-t;
+    if(rem<0){ pill.textContent=`❌ $${Math.abs(rem).toFixed(2)} OVER`; pill.classList.add('over'); }
+    else if(rem<b*0.15){ pill.textContent=`⚠️ $${rem.toFixed(2)} left`; pill.classList.add('warn'); }
+    else{ pill.textContent=`✅ $${rem.toFixed(2)} left`; pill.classList.add('good'); }
+  }
+}
+
+function navShop(dir) {
+  if(dir===1 && S.step<CATS.length-1){ S.step++; renderStep(); }
+  else if(dir===1){ showSummary(); }
+  else if(dir===-1 && S.step>0){ S.step--; renderStep(); }
+}
+
+// ── Summary ────────────────────────────────────────
+function showSummary() {
+  recalc();
+  const t=S.total, b=S.budget;
+  const tb=document.getElementById('total-box');
+  tb.className='total-box '+(b===0?'total-blue': t<=b?'total-green':'total-red');
+  tb.innerHTML = `GRAND TOTAL: $${t.toFixed(2)}`;
+
+  const rm=document.getElementById('budget-result-msg');
+  if(b===0){
+    rm.className='alert alert-info';
+    rm.innerHTML=`💡 No budget was set. You would spend <strong>$${t.toFixed(2)}</strong> to furnish your apartment.`;
+  } else if(t<=b){
+    rm.className='alert alert-success';
+    rm.innerHTML=`🎉 Great job! You stayed under your $${b.toLocaleString()} budget. You saved <strong>$${(b-t).toFixed(2)}</strong>!`;
+  } else {
+    rm.className='alert alert-danger';
+    rm.innerHTML=`😬 You went <strong>$${(t-b).toFixed(2)} over</strong> your $${b.toLocaleString()} budget. Think about swapping pricier items!`;
+  }
+
+  // Room cards
+  const rooms={};
+  CATS.forEach(cat=>{
+    if(!rooms[cat.room]) rooms[cat.room]=[];
+    (S.sel[cat.id]||[]).forEach(i=>rooms[cat.room].push({cat:cat.name,n:cat.items[i].n,p:cat.items[i].p}));
+  });
+  document.getElementById('rooms-container').innerHTML = Object.entries(rooms).map(([room,items])=>{
+    if(!items.length) return '';
+    const sub=items.reduce((a,i)=>a+i.p,0);
+    return `<div class="room-card">
+      <div class="room-title">${ROOM_EMOJI[room]||'🏠'} ${room} — $${sub.toFixed(2)}</div>
+      <table class="sum-table">
+        ${items.map(i=>`<tr><td>${i.cat}</td><td>${i.n}</td><td>$${i.p.toFixed(2)}</td></tr>`).join('')}
+      </table>
+    </div>`;
+  }).join('');
+  go('summary');
+}
+
+// ── Submit ─────────────────────────────────────────
+async function submitWork() {
+  const rs=['r1','r2','r3','r4','r5'].map(id=>document.getElementById(id).value.trim());
+  if(rs.some(r=>!r)){ document.getElementById('ref-err').style.display='block'; return; }
+  document.getElementById('ref-err').style.display='none';
+  document.getElementById('sub-spin').style.display='inline-block';
+
+  const payload={
+    name:S.name, school:S.school, budget:S.budget,
+    total:S.total.toFixed(2),
+    selections:JSON.stringify(S.sel),
+    reflections:JSON.stringify(rs),
+    timestamp:new Date().toLocaleString()
+  };
+
+  // Google Sheets submission
+  if(!SCRIPT_URL.includes('PASTE_YOUR')) {
+    try { await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)}); }
+    catch(e){ console.log('Submit err:',e); }
+  }
+  // Local backup always
+  const saved=JSON.parse(localStorage.getItem('subs')||'[]');
+  saved.push(payload); localStorage.setItem('subs',JSON.stringify(saved));
+
+  document.getElementById('sub-spin').style.display='none';
+
+  const b=S.budget, t=S.total;
+  document.getElementById('sub-msg').textContent=`${S.name}, your teacher can see your work! 🎓`;
+  document.getElementById('sub-total').textContent=`Total Spent: $${t.toFixed(2)}`;
+  document.getElementById('sub-status').innerHTML = b===0?'' : t<=b
+    ? `✅ You stayed under your $${b.toLocaleString()} budget!`
+    : `❌ You went over your $${b.toLocaleString()} budget.`;
+  go('submitted');
+}
+
+function resetApp() {
+  S={name:'',school:'',budget:0,step:0,sel:{},total:0};
+  ['s-first','s-last'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('s-school').value='';
+  ['r1','r2','r3','r4','r5'].forEach(id=>document.getElementById(id).value='');
+  go('welcome');
+}
+
+// ── TTS ────────────────────────────────────────────
+function speak(ctx) {
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  let txt='';
+  if(ctx==='instr') txt=document.getElementById('instr-text').textContent+'. '+document.getElementById('budget-msg-box').textContent;
+  if(ctx==='reflect') txt='Reflection questions. 1. What did you learn from this activity? 2. Were you surprised by your final total? Why or why not? 3. What are some ways you can save money when furnishing your apartment? 4. At what age do you think you will have enough saved to move out? 5. Do you think you will need a job before you move out? Why or why not?';
+  const u=new SpeechSynthesisUtterance(txt); u.rate=0.9; speechSynthesis.speak(u);
+}
+
+// ── URL param school pre-fill ───────────────────────
+(function(){
+  const p=new URLSearchParams(window.location.search);
+  const sc=p.get('school');
+  if(sc){ const sel=document.getElementById('s-school'); if(sel) sel.value=sc; }
+})();
+</script>
+</body>
+</html>
